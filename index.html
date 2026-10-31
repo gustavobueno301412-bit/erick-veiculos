@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vitrine Digital - Concessionária</title>
+  <style>
+    /* --- RESET & VARIAVEIS --- */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    :root {
+      --primary: #1e293b;
+      --accent: #2563eb;
+      --success: #25d366;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --radius: 12px;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      padding-bottom: 80px;
+      max-width: 600px;
+      margin: 0 auto;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* --- TOPO / CABEÇALHO ROTATIVO --- */
+    header {
+      background-color: var(--primary);
+      color: #ffffff;
+      padding: 12px 16px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .store-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+
+    .btn-admin {
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      color: #fff;
+      padding: 6px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .ticker-wrap {
+      overflow: hidden;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 6px;
+      padding: 4px 8px;
+      font-size: 0.75rem;
+      white-space: nowrap;
+    }
+
+    .ticker-text {
+      display: inline-block;
+      animation: marquee 18s linear infinite;
+    }
+
+    @keyframes marquee {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+
+    /* --- CONTAINER PRINCIPAL --- */
+    main {
+      padding: 12px;
+    }
+
+    /* --- BANNER ROTATIVO (CARROSSEL) --- */
+    .carousel-container {
+      position: relative;
+      width: 100%;
+      height: 160px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow);
+      background-color: #cbd5e1;
+    }
+
+    .carousel-slide {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.4s ease-in-out;
+    }
+
+    .carousel-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    /* --- CAMPO DE BUSCA --- */
+    .search-box {
+      margin-bottom: 12px;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.95rem;
+      outline: none;
+      background-color: #fff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+
+    .search-input:focus {
+      border-color: var(--accent);
+    }
+
+    /* --- GRADE DE CATEGORIAS (4 EM CIMA, 4 EM BAIXO) --- */
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .cat-btn {
+      background-color: #fff;
+      border: 1px solid var(--border);
+      padding: 10px 4px;
+      border-radius: 10px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      color: var(--text-muted);
+      transition: all 0.2s;
+      text-align: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    }
+
+    .cat-btn .emoji {
+      font-size: 1.2rem;
+    }
+
+    .cat-btn.active {
+      background-color: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+      font-weight: 700;
+      box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
+    }
+
+    /* --- LISTA DE CARDS (GRID DE VEÍCULOS) --- */
+    .vehicles-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-img-wrap {
+      position: relative;
+      width: 100%;
+      height: 200px;
+      background-color: #e2e8f0;
+    }
+
+    .card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .card-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background-color: #ef4444;
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+
+    .card-body {
+      padding: 14px;
+    }
+
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+
+    .card-price {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .tag {
+      background: #f1f5f9;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-weight: 500;
+    }
+
+    .btn-details {
+      width: 100%;
+      padding: 10px;
+      background-color: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    /* --- BOTÃO FLUTUANTE DE ATENDIMENTO GERAL --- */
+    .btn-whatsapp-fixed {
+      position: fixed;
+      bottom: 16px;
+      right: 16px;
+      background-color: var(--success);
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      padding: 12px 20px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      box-shadow: 0 4px 16px rgba(37, 211, 102, 0.4);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 90;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    /* --- MODAIS (DETALHES E LOGIN / CADASTRO) --- */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      justify-content: center;
+      align-items: flex-end;
+      z-index: 200;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: #fff;
+      width: 100%;
+      max-width: 600px;
+      max-height: 90vh;
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+      overflow-y: auto;
+      padding: 20px;
+      position: relative;
+      animation: slideUp 0.3s ease-out;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      background: #f1f5f9;
+      border: none;
+      font-size: 1.2rem;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* --- GALERIA NOS DETALHES --- */
+    .gallery-container {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      margin-bottom: 16px;
+      border-radius: var(--radius);
+    }
+
+    .gallery-img {
+      width: 240px;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
+
+    .details-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 16px 0;
+      background: #f8fafc;
+      padding: 12px;
+      border-radius: var(--radius);
+    }
+
+    .details-item {
+      font-size: 0.85rem;
+    }
+
+    .details-item span {
+      display: block;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+    }
+
+    .btn-whatsapp-lead {
+      width: 100%;
+      padding: 14px;
+      background-color: var(--success);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    /* --- FORMULÁRIO DO VENDEDOR --- */
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.9rem;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-save {
+      width: 100%;
+      padding: 12px;
+      background-color: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .btn-secondary {
+      width: 100%;
+      padding: 10px;
+      background-color: #64748b;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+
+    /* --- LOADING SKELETON --- */
+    .loading-spinner {
+      text-align: center;
+      padding: 40px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CABEÇALHO DA LOJA -->
+  <header>
+    <div class="header-top">
+      <div class="store-title" id="storeName">Carregando Loja...</div>
+      <button class="btn-admin" onclick="openPinModal()">🔒 Vendedor</button>
+    </div>
+    <div class="ticker-wrap">
+      <div class="ticker-text" id="tickerMsg">Bem-vindo! Confira nosso estoque em tempo real.</div>
+    </div>
+  </header>
+
+  <main>
+    <!-- BANNER ROTATIVO -->
+    <div class="carousel-container">
+      <div class="carousel-slide" id="carouselSlide">
+        <img src="https://via.placeholder.com/600x200/1e293b/ffffff?text=Carregando+Banners..." alt="Banner">
+      </div>
+    </div>
+
+    <!-- CAMPO DE BUSCA -->
+    <div class="search-box">
+      <input type="text" id="searchInput" class="search-input" placeholder="🔍 Buscar por nome, marca, modelo ou ano..." oninput="filterVehicles()">
+    </div>
+
+    <!-- BOTÕES DE CATEGORIAS (GRADE 4 x 2) -->
+    <div class="categories-grid" id="categoriesContainer">
+      <!-- Gerado dinamicamente via JS -->
+    </div>
+
+    <!-- FEED DE CARDS -->
+    <div class="vehicles-grid" id="vehiclesGrid">
+      <div class="loading-spinner">Carregando estoque atualizado...</div>
+    </div>
+  </main>
+
+  <!-- BOTÃO FLUTUANTE WHATSAPP DA LOJA -->
+  <a id="btnGeneralWhatsapp" href="#" target="_blank" class="btn-whatsapp-fixed">
+    💬 Fale com a Gente
+  </a>
+
+  <!-- MODAL 1: DETALHES DO VEÍCULO -->
+  <div class="modal-overlay" id="modalDetails">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('modalDetails')">✕</button>
+      <h2 id="modalTitle" style="font-size: 1.2rem; margin-bottom: 4px;"></h2>
+      <div id="modalPrice" style="font-size: 1.4rem; font-weight: 800; color: var(--accent);"></div>
+
+      <!-- GALERIA DE FOTOS -->
+      <div class="gallery-container" id="modalGallery"></div>
+
+      <!-- GRID DE ESPECIFICAÇÕES -->
+      <div class="details-grid">
+        <div class="details-item"><span>Ano / Modelo</span><strong id="mAno"></strong></div>
+        <div class="details-item"><span>Quilometragem</span><strong id="mKm"></strong></div>
+        <div class="details-item"><span>Câmbio</span><strong id="mCambio"></strong></div>
+        <div class="details-item"><span>Combustível</span><strong id="mCombustivel"></strong></div>
+        <div class="details-item"><span>Cor</span><strong id="mCor"></strong></div>
+        <div class="details-item"><span>Final de Placa</span><strong id="mPlaca"></strong></div>
+      </div>
+
+      <div style="margin-bottom: 12px;">
+        <strong style="font-size: 0.85rem;">Opcionais:</strong>
+        <p id="mOpcionais" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;"></p>
+      </div>
+
+      <div style="margin-bottom: 12px;">
+        <strong style="font-size: 0.85rem;">Descrição e Procedência:</strong>
+        <p id="mDescricao" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;"></p>
+      </div>
+
+      <button class="btn-whatsapp-lead" id="mBtnLead">
+        📲 Tenho Interesse! Falar pelo WhatsApp
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL 2: PIN DE SEGURANÇA -->
+  <div class="modal-overlay" id="modalPin">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('modalPin')">✕</button>
+      <h3 style="margin-bottom: 12px;">Área Restrita do Vendedor</h3>
+      <div class="form-group">
+        <label>Digite a senha / PIN de Acesso:</label>
+        <input type="password" id="pinInput" placeholder="PIN de 4 dígitos">
+      </div>
+      <button class="btn-save" onclick="verifyPin()">Entrar no Painel</button>
+    </div>
+  </div>
+
+  <!-- MODAL 3: PAINEL DO VENDEDOR (ESCOLHER ENTRE CADASTRAR OU GERENCIAR ESTOQUE) -->
+  <div class="modal-overlay" id="modalDashboard">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('modalDashboard')">✕</button>
+      <h3 style="margin-bottom: 16px;">Painel do Vendedor ⚙️</h3>
+      <button class="btn-save" onclick="openFormModal()" style="margin-bottom: 10px;">➕ Cadastrar Novo Veículo</button>
+      <button class="btn-secondary" onclick="openManageModal()">📋 Gerenciar Estoque (Dar Baixa / Vendidos)</button>
+    </div>
+  </div>
+
+  <!-- MODAL 4: CADASTRO DE VEÍCULO -->
+  <div class="modal-overlay" id="modalForm">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('modalForm')">✕</button>
+      <h3 style="margin-bottom: 12px;">Cadastrar Novo Veículo</h3>
+     
+      <form id="vehicleForm" onsubmit="handleFormSubmit(event)">
+        <div class="form-group">
+          <label>Título do Anúncio *</label>
+          <input type="text" id="fTitulo" placeholder="Ex: Toyota Corolla 2.0 Altis Flex" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group" style="flex: 1;">
+            <label>Marca *</label>
+            <input type="text" id="fMarca" placeholder="Ex: Toyota" required>
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label>Modelo *</label>
+            <input type="text" id="fModelo" placeholder="Ex: Corolla" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group" style="flex: 1;">
+            <label>Categoria *</label>
+            <select id="fCategoria" required>
+              <option value="Sedan">Sedan</option>
+              <option value="SUV">SUV</option>
+              <option value="Picape">Picape</option>
+              <option value="Hatch">Hatch</option>
+              <option value="Utilitário">Utilitário</option>
+              <option value="Moto">Moto</option>
+              <option value="Premium">Premium</option>
+            </select>
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label>Preço (R$) *</label>
+            <input type="number" id="fPreco" placeholder="Ex: 118500" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group" style="flex: 1;">
+            <label>Ano Fab.</label>
+            <input type="number" id="fAnoFab" placeholder="2021">
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label>Ano Mod.</label>
+            <input type="number" id="fAnoMod" placeholder="2022">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group" style="flex: 1;">
+            <label>KM</label>
+            <input type="number" id="fKm" placeholder="Ex: 45000">
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label>Câmbio</label>
+            <select id="fCambio">
+              <option value="Automático">Automático</option>
+              <option value="Manual">Manual</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group" style="flex: 1;">
+            <label>Combustível</label>
+            <input type="text" id="fCombustivel" placeholder="Flex / Gasolina">
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label>Cor</label>
+            <input type="text" id="fCor" placeholder="Prata">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Opcionais (Separados por vírgula)</label>
+          <input type="text" id="fOpcionais" placeholder="Ar, Couro, Teto solar, ABS">
+        </div>
+
+        <div class="form-group">
+          <label>Descrição Detalhada</label>
+          <textarea id="fDescricao" rows="3" placeholder="Detalhes da conservação, revisões..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Seu WhatsApp de Vendedor (Com DDD) *</label>
+          <input type="number" id="fZap" placeholder="Ex: 5512999999999" required>
+        </div>
+
+        <button type="submit" class="btn-save" id="btnSubmitForm">
+          Salvar Dados e Enviar Fotos no WhatsApp 📸
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 5: GERENCIAR ESTOQUE (MUDAR STATUS) -->
+  <div class="modal-overlay" id="modalManage">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('modalManage')">✕</button>
+      <h3 style="margin-bottom: 12px;">Gerenciar Estoque (Dar Baixa)</h3>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 14px;">Altere o status para ocultar veículos vendidos da vitrine:</p>
+      <div id="manageStockList" style="display: flex; flex-direction: column; gap: 10px; max-height: 60vh; overflow-y: auto;">
+        <!-- Preenchido via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- JS DO APLICATIVO -->
+  <script>
+    // URL DA API DO GOOGLE APPS SCRIPT
+    const API_URL = "https://script.google.com/macros/s/AKfycbyNYD2P1gooNrdVLEnYhm0XUiBL-OqDpoCpVwHuCJsG_BJrJ2-7fHKWGHiZ3lhY2D8LcA/exec";
+
+    // ESTADO GLOBAL
+    let globalData = { loja: {}, banners: [], categorias: [], veiculos: [], todos_veiculos: [] };
+    let filteredVehicles = [];
+    let activeCategory = 'todas';
+    let currentBannerIndex = 0;
+
+    // INICIALIZAÇÃO
+    window.addEventListener('DOMContentLoaded', () => {
+      fetchData();
+    });
+
+    // BUSCA OS DADOS DO APPS SCRIPT
+    async function fetchData() {
+      try {
+        const response = await fetch(API_URL);
+        const json = await response.json();
+
+        if (json.status === "success") {
+          globalData = json;
+         
+          globalData.veiculos = shuffleArray(globalData.veiculos);
+          filteredVehicles = [...globalData.veiculos];
+
+          renderStoreInfo();
+          renderBanners();
+          renderCategories();
+          renderVehicles();
+        } else {
+          document.getElementById('vehiclesGrid').innerHTML = '<p style="text-align:center;">Erro ao carregar dados da loja.</p>';
+        }
+      } catch (err) {
+        console.error("Erro na API:", err);
+        document.getElementById('vehiclesGrid').innerHTML = '<p style="text-align:center;">Instabilidade na conexão. Tente recarregar.</p>';
+      }
+    }
+
+    // EMBARALHAR ARRAY
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    // RENDERIZAR INFO DA LOJA
+    function renderStoreInfo() {
+      const loja = globalData.loja;
+      if (loja.nome_loja) document.getElementById('storeName').textContent = loja.nome_loja;
+      if (loja.mensagens_rotativas) document.getElementById('tickerMsg').textContent = loja.mensagens_rotativas;
+    
+      const btnZap = document.getElementById('btnGeneralWhatsapp');
+      const zapNum = loja.whatsapp_geral || '5512999999999';
+      btnZap.href = `https://wa.me/${zapNum}?text=${encodeURIComponent('Olá! Vim pelo QR Code da vitrine e gostaria de atendimento.')}`;
+    }
+
+    // RENDERIZAR CARROSSEL DE BANNERS
+    function renderBanners() {
+      const slide = document.getElementById('carouselSlide');
+      if (!globalData.banners || globalData.banners.length === 0) return;
+
+      slide.innerHTML = globalData.banners.map(b => `<img src="${b.imagem_url}" alt="${b.titulo}">`).join('');
+
+      if (globalData.banners.length > 1) {
+        setInterval(() => {
+          currentBannerIndex = (currentBannerIndex + 1) % globalData.banners.length;
+          slide.style.transform = `translateX(-${currentBannerIndex * 100}%)`;
+        }, 4000);
+      }
+    }
+
+    // RENDERIZAR CATEGORIAS EM GRADE 4x2
+    function renderCategories() {
+      const container = document.getElementById('categoriesContainer');
+      let html = '';
+
+      const list = globalData.categorias.slice(0, 7);
+
+      list.forEach(c => {
+        const isActive = activeCategory.toLowerCase() === String(c.nome).toLowerCase() ? 'active' : '';
+        html += `
+          <button class="cat-btn ${isActive}" onclick="selectCategory('${c.nome}', this)">
+            <span class="emoji">${c.icone_emoji || '🚗'}</span>
+            <span>${c.nome}</span>
+          </button>
+        `;
+      });
+
+      const isAllActive = activeCategory === 'todas' ? 'active' : '';
+      html += `
+        <button class="cat-btn ${isAllActive}" onclick="selectCategory('todas', this)">
+          <span class="emoji">✨</span>
+          <span>TODOS</span>
+        </button>
+      `;
+
+      container.innerHTML = html;
+    }
+
+    // FILTRAR POR CATEGORIA
+    function selectCategory(catName, btn) {
+      activeCategory = catName;
+      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      filterVehicles();
+    }
+
+    // FILTRAR POR BUSCA E CATEGORIA
+    function filterVehicles() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+
+      filteredVehicles = globalData.veiculos.filter(v => {
+        const matchCat = (activeCategory === 'todas') || (String(v.categoria).toLowerCase() === activeCategory.toLowerCase());
+        const matchQuery = !query ||
+          String(v.titulo).toLowerCase().includes(query) ||
+          String(v.marca).toLowerCase().includes(query) ||
+          String(v.modelo).toLowerCase().includes(query) ||
+          String(v.ano_modelo).includes(query);
+
+        return matchCat && matchQuery;
+      });
+
+      renderVehicles();
+    }
+
+    // RENDERIZAR CARDS DOS CARROS
+    function renderVehicles() {
+      const grid = document.getElementById('vehiclesGrid');
+    
+      if (filteredVehicles.length === 0) {
+        grid.innerHTML = '<p style="text-align:center; padding:30px; color: var(--text-muted);">Nenhum veículo encontrado.</p>';
+        return;
+      }
+
+      grid.innerHTML = filteredVehicles.map(v => {
+        const precoFormatado = Number(v.preco).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        const kmFormatado = Number(v.km).toLocaleString('pt-BR') + ' km';
+        const foto = v.foto_capa || 'https://via.placeholder.com/400x250/cbd5e1/0f172a?text=Foto+em+Breve';
+
+        return `
+          <div class="card">
+            <div class="card-img-wrap">
+              <img src="${foto}" alt="${v.titulo}" class="card-img" loading="lazy">
+              ${v.destaque && String(v.destaque).toLowerCase() === 'sim' ? '<span class="card-badge">OFERTA</span>' : ''}
+            </div>
+            <div class="card-body">
+              <h3 class="card-title">${v.titulo}</h3>
+              <div class="card-price">${precoFormatado}</div>
+              <div class="card-tags">
+                <span class="tag">📅 ${v.ano_fabricacao}/${v.ano_modelo}</span>
+                <span class="tag">🛣️ ${kmFormatado}</span>
+                <span class="tag">⚙️ ${v.cambio}</span>
+                <span class="tag">⛽ ${v.combustivel}</span>
+              </div>
+              <button class="btn-details" onclick="openDetails('${v.id}')">Ver Mais Detalhes</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ABRIR MODAL DE DETALHES
+    function openDetails(vehId) {
+      const v = globalData.veiculos.find(item => String(item.id) === String(vehId));
+      if (!v) return;
+
+      document.getElementById('modalTitle').textContent = v.titulo;
+      document.getElementById('modalPrice').textContent = Number(v.preco).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      document.getElementById('mAno').textContent = `${v.ano_fabricacao}/${v.ano_modelo}`;
+      document.getElementById('mKm').textContent = Number(v.km).toLocaleString('pt-BR') + ' km';
+      document.getElementById('mCambio').textContent = v.cambio || '-';
+      document.getElementById('mCombustivel').textContent = v.combustivel || '-';
+      document.getElementById('mCor').textContent = v.cor || '-';
+      document.getElementById('mPlaca').textContent = v.placa_final ? `Final ${v.placa_final}` : '-';
+      document.getElementById('mOpcionais').textContent = v.opcionais || 'Não informados';
+      document.getElementById('mDescricao').textContent = v.descricao || 'Sem descrição adicional.';
+
+      const gallery = document.getElementById('modalGallery');
+      let photos = [];
+     
+      if (v.fotos_galeria) {
+        photos = String(v.fotos_galeria).split(',').map(url => url.trim()).filter(url => url !== "");
+      }
+     
+      if (v.foto_capa && !photos.includes(v.foto_capa)) {
+        photos.unshift(v.foto_capa);
+      }
+
+      photos = [...new Set(photos)];
+
+      if (photos.length > 0) {
+        gallery.innerHTML = photos.map(imgUrl => `<img src="${imgUrl}" class="gallery-img" alt="Foto do veículo">`).join('');
+      } else {
+        gallery.innerHTML = '<img src="https://via.placeholder.com/400x250/cbd5e1/0f172a?text=Foto+em+Breve" class="gallery-img">';
+      }
+
+      const btnLead = document.getElementById('mBtnLead');
+      const zapVendedor = v.whatsapp_vendedor || globalData.loja.whatsapp_geral || '5512999999999';
+      const msgText = `Olá! Estou em frente à concessionária e vi o *${v.titulo}* (Cód: ${v.id}). Gostaria de mais informações!`;
+    
+      btnLead.onclick = () => {
+        window.open(`https://wa.me/${zapZapNumber(zapVendedor)}?text=${encodeURIComponent(msgText)}`, '_blank');
+      };
+
+      document.getElementById('modalDetails').classList.add('active');
+    }
+
+    // UTILITÁRIO: FORMATAR NÚMERO DO ZAP
+    function zapZapNumber(num) {
+      let clean = String(num).replace(/\D/g, '');
+      if (clean.length === 10 || clean.length === 11) clean = '55' + clean;
+      return clean;
+    }
+
+    // GESTÃO DE MODAIS
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.remove('active');
+    }
+
+    function openPinModal() {
+      document.getElementById('modalPin').classList.add('active');
+    }
+
+    // VERIFICAR PIN DO VENDEDOR
+    function verifyPin() {
+      const pinTyped = document.getElementById('pinInput').value;
+      const pinCorrect = globalData.loja.pin_vendedor || "1234";
+
+      if (String(pinTyped) === String(pinCorrect)) {
+        closeModal('modalPin');
+        document.getElementById('pinInput').value = '';
+        document.getElementById('modalDashboard').classList.add('active');
+      } else {
+        alert("PIN incorreto! Tente novamente.");
+      }
+    }
+
+    function openFormModal() {
+      closeModal('modalDashboard');
+      document.getElementById('modalForm').classList.add('active');
+    }
+
+    function openManageModal() {
+      closeModal('modalDashboard');
+      renderManageStock();
+      document.getElementById('modalManage').classList.add('active');
+    }
+
+    // RENDERIZAR LISTA DE ESTOQUE PARA DAR BAIXA
+    function renderManageStock() {
+      const container = document.getElementById('manageStockList');
+      const lista = globalData.todos_veiculos || [];
+
+      if (lista.length === 0) {
+        container.innerHTML = '<p style="text-align:center; color: var(--text-muted);">Nenhum veículo cadastrado.</p>';
+        return;
+      }
+
+      container.innerHTML = lista.map(v => {
+        const statusAtual = String(v.status || "Disponível").trim();
+        const isVendido = statusAtual.toLowerCase() === "vendido" || statusAtual.toLowerCase() === "inativo";
+        const btnColor = isVendido ? "#16a34a" : "#dc2626";
+        const btnText = isVendido ? "🟢 Marcar como Disponível" : "🔴 Dar Baixa (Vendido)";
+        const novoStatus = isVendido ? "Disponível" : "Vendido";
+
+        return `
+          <div style="background: #f8fafc; border: 1px solid var(--border); padding: 10px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+            <div>
+              <strong style="font-size: 0.9rem; display: block;">${v.titulo || 'Veículo sem título'}</strong>
+              <span style="font-size: 0.75rem; color: var(--text-muted);">Status atual: <b>${statusAtual}</b></span>
+            </div>
+            <button onclick="updateVehicleStatus('${v.id}', '${novoStatus}')" style="background: ${btnColor}; color: #fff; border: none; padding: 6px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; cursor: pointer; white-space: nowrap;">
+              ${btnText}
+            </button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ATUALIZAR STATUS DO VEÍCULO NA API
+    async function updateVehicleStatus(vehId, novoStatus) {
+      if (!confirm(`Deseja alterar o status deste veículo para "${novoStatus}"?`)) return;
+
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: "update_status", id: vehId, status: novoStatus })
+        });
+        const json = await response.json();
+
+        if (json.status === "success") {
+          alert("Status alterado com sucesso!");
+          closeModal('modalManage');
+          fetchData(); // Recarrega os dados atualizados
+        } else {
+          alert("Erro ao atualizar status: " + json.message);
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Erro de conexão ao atualizar status.");
+      }
+    }
+
+    // SUBMIT DO FORMULÁRIO DO VENDEDOR
+    async function handleFormSubmit(event) {
+      event.preventDefault();
+
+      const btn = document.getElementById('btnSubmitForm');
+      btn.disabled = true;
+      btn.textContent = "Gravando dados...";
+
+      const vehId = "VEH" + Date.now().toString().slice(-5);
+      const zapVendedor = zapZapNumber(document.getElementById('fZap').value);
+
+      const payload = {
+        id: vehId,
+        titulo: document.getElementById('fTitulo').value,
+        marca: document.getElementById('fMarca').value,
+        modelo: document.getElementById('fModelo').value,
+        categoria: document.getElementById('fCategoria').value,
+        preco: Number(document.getElementById('fPreco').value),
+        ano_fabricacao: Number(document.getElementById('fAnoFab').value),
+        ano_modelo: Number(document.getElementById('fAnoMod').value),
+        km: Number(document.getElementById('fKm').value),
+        cambio: document.getElementById('fCambio').value,
+        combustivel: document.getElementById('fCombustivel').value,
+        cor: document.getElementById('fCor').value,
+        opcionais: document.getElementById('fOpcionais').value,
+        descricao: document.getElementById('fDescricao').value,
+        whatsapp_vendedor: zapVendedor
+      };
+
+      try {
+        await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload)
+        });
+
+        alert("Dados do veículo salvos na planilha!");
+
+        const msgWhats = `📩 *NOVO CADASTRO DE VEÍCULO*\n\n` +
+          `*ID:* ${vehId}\n` +
+          `*Carro:* ${payload.titulo}\n` +
+          `*Ano:* ${payload.ano_fabricacao}/${payload.ano_modelo}\n` +
+          `*Preço:* R$ ${payload.preco}\n\n` +
+          `📸 *Estou enviando as fotos em anexo abaixo para publicação no aplicativo.*`;
+
+        window.open(`https://wa.me/${zapVendedor}?text=${encodeURIComponent(msgWhats)}`, '_blank');
+
+        closeModal('modalForm');
+        document.getElementById('vehicleForm').reset();
+        fetchData(); // Recarrega os dados
+
+      } catch (err) {
+        console.error(err);
+        alert("Ocorreu um erro ao salvar o veículo.");
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Salvar Dados e Enviar Fotos no WhatsApp 📸";
+      }
+    }
+  </script>
+</body>
+</html>
+
+ 
